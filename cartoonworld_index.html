@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cartoon World | Kids' Cartoon Hub</title>
+  <style>
+    :root { --bg:#071426; --panel:#10233b; --text:#f7faff; --muted:#b9c7da; --accent:#16c7f5; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Arial,Helvetica,sans-serif; background:var(--bg); color:var(--text); }
+    header { position:sticky; top:0; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:18px; padding:16px 5%; background:#09182b; border-bottom:1px solid #203853; }
+    .logo { font-size:clamp(20px,3vw,30px); font-weight:800; white-space:nowrap; }
+    .logo span { color:var(--accent); }
+    nav { display:flex; gap:16px; flex-wrap:wrap; }
+    nav a { color:var(--text); text-decoration:none; font-weight:700; font-size:14px; }
+    nav a:hover { color:var(--accent); }
+    .search { width:min(280px,100%); padding:11px 14px; border:1px solid #35506e; border-radius:22px; background:#10233b; color:white; outline:none; }
+    .hero { min-height:290px; padding:52px 6%; display:flex; align-items:center; background:radial-gradient(circle at 78% 25%,#3d76a6 0,#17507a 23%,transparent 45%),linear-gradient(110deg,#102b4a,#0b172b 65%); }
+    .hero-copy { max-width:590px; }
+    .hero h1 { margin:0 0 12px; font-size:clamp(32px,5vw,54px); }
+    .hero p { color:#d6e4f5; line-height:1.6; max-width:540px; }
+    .button { display:inline-block; border:0; border-radius:24px; padding:12px 20px; background:var(--accent); color:#041324; font-weight:800; text-decoration:none; cursor:pointer; }
+    main { padding:26px 5% 48px; }
+    .section-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:26px 0 15px; }
+    h2 { font-size:22px; margin:0; }
+    .categories { display:flex; gap:10px; overflow-x:auto; padding:5px 0 12px; }
+    .chip { border:1px solid #2b4764; background:#10233b; color:white; border-radius:20px; padding:10px 15px; cursor:pointer; white-space:nowrap; }
+    .chip.active,.chip:hover { background:var(--accent); color:#061426; }
+    .grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:17px; }
+    .card { overflow:hidden; background:var(--panel); border:1px solid #203b58; border-radius:13px; transition:transform .18s ease; }
+    .card:hover { transform:translateY(-4px); }
+    .art { height:145px; display:grid; place-items:center; font-size:64px; position:relative; background:linear-gradient(135deg,var(--c1),var(--c2)); }
+    .art small { position:absolute; bottom:8px; left:10px; font-size:11px; letter-spacing:1px; font-weight:800; background:#061426b8; padding:5px 7px; border-radius:5px; }
+    .details { padding:12px; }
+    .details h3 { font-size:16px; margin:0 0 7px; }
+    .details p { margin:0 0 12px; color:var(--muted); font-size:12px; }
+    .watch { display:inline-block; color:var(--accent); font-weight:bold; font-size:13px; text-decoration:none; }
+    .empty { display:none; padding:28px 0; color:var(--muted); }
+    footer { border-top:1px solid #203853; color:var(--muted); text-align:center; padding:24px 5%; font-size:12px; line-height:1.7; }
+    @media(max-width:1000px) { .grid { grid-template-columns:repeat(3,minmax(0,1fr)); } header { flex-wrap:wrap; } }
+    @media(max-width:620px) { header { padding:14px 4%; } nav { order:3; width:100%; } .search { flex:1; width:auto; } .hero { padding:38px 5%; } main { padding:18px 4% 36px; } .grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; } .art { height:120px; font-size:52px; } h2 { font-size:19px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">📺 Cartoon<span>World</span></div>
+    <nav aria-label="Main navigation">
+      <a href="#home">Home</a><a href="#cartoons">Cartoons</a><a href="#categories">Categories</a>
+    </nav>
+    <input class="search" id="search" type="search" placeholder="Search cartoons..." aria-label="Search cartoons">
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-copy">
+      <p>WELCOME TO YOUR CARTOON HUB</p>
+      <h1>Big adventures.<br>Little screens. ✨</h1>
+      <p>Explore cartoon shows, animated movies, funny characters and family favourites in one colourful place.</p>
+      <a class="button" href="#cartoons">Explore Cartoons ↓</a>
+    </div>
+  </section>
+
+  <main>
+    <section id="categories">
+      <div class="section-head"><h2>Browse by category</h2></div>
+      <div class="categories" id="chips">
+        <button class="chip active" data-category="All">All cartoons</button>
+        <button class="chip" data-category="Comedy">Comedy</button>
+        <button class="chip" data-category="Adventure">Adventure</button>
+        <button class="chip" data-category="Superheroes">Superheroes</button>
+        <button class="chip" data-category="Educational">Educational</button>
+        <button class="chip" data-category="Indian">Indian cartoons</button>
+      </div>
+    </section>
+
+    <section id="cartoons">
+      <div class="section-head"><h2>Cartoons to explore</h2><span id="count" style="color:#b9c7da;font-size:13px"></span></div>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty">No cartoons found. Try another search.</p>
+    </section>
+  </main>
+
+  <footer>
+    <strong>CartoonWorld</strong> — a beginner website demo.<br>
+    This demo uses emoji artwork and links to YouTube search results, not copied episodes or movies.
+    Only stream videos you own or have permission to use. Cartoon names and characters belong to their respective owners.
+  </footer>
+
+  <script>
+    const cartoons = [
+      {name:"Tom & Jerry", category:"Comedy", emoji:"🐱", colors:["#f5a742","#e75c53"], description:"Classic cat-and-mouse comedy"},
+      {name:"Doraemon", category:"Adventure", emoji:"🤖", colors:["#29b6f6","#2467d9"], description:"Gadgets, friendship and fun"},
+      {name:"Shinchan", category:"Comedy", emoji:"🧒", colors:["#ffb347","#ff6b4a"], description:"Mischievous family comedy"},
+      {name:"Pokémon", category:"Adventure", emoji:"⚡", colors:["#ffe45c","#f39a26"], description:"Creatures, friendship and battles"},
+      {name:"Chhota Bheem", category:"Indian", emoji:"💪", colors:["#7ac943","#178a55"], description:"Indian animated adventures"},
+      {name:"Motu Patlu", category:"Indian", emoji:"🍩", colors:["#ff9b5e","#db4c42"], description:"Funny friends and mishaps"},
+      {name:"Ben 10", category:"Superheroes", emoji:"👽", colors:["#9bea55","#147d50"], description:"A hero with alien powers"},
+      {name:"SpongeBob SquarePants", category:"Comedy", emoji:"🧽", colors:["#ffed61","#f3a51b"], description:"Undersea comedy adventures"},
+      {name:"Peppa Pig", category:"Educational", emoji:"🐷", colors:["#ff9ed0","#e95b9e"], description:"Little everyday adventures"},
+      {name:"Pinaki & Happy", category:"Indian", emoji:"👻", colors:["#b59cff","#5b55d9"], description:"Funny spooky adventures"},
+      {name:"Masha and the Bear", category:"Comedy", emoji:"🐻", colors:["#9fe5a0","#389c71"], description:"Playful forest stories"},
+      {name:"The Jungle Book", category:"Adventure", emoji:"🌴", colors:["#73d36b","#1b8057"], description:"Adventures in the jungle"}
+    ];
+
+    const grid = document.getElementById("grid");
+    const search = document.getElementById("search");
+    const count = document.getElementById("count");
+    const empty = document.getElementById("empty");
+    let activeCategory = "All";
+
+    function render() {
+      const term = search.value.trim().toLowerCase();
+      const filtered = cartoons.filter(c =>
+        (activeCategory === "All" || c.category === activeCategory) &&
+        (c.name.toLowerCase().includes(term) || c.description.toLowerCase().includes(term))
+      );
+      grid.innerHTML = filtered.map(c => `
+        <article class="card">
+          <div class="art" style="--c1:${c.colors[0]};--c2:${c.colors[1]}">
+            <span aria-hidden="true">${c.emoji}</span><small>${c.category.toUpperCase()}</small>
+          </div>
+          <div class="details">
+            <h3>${c.name}</h3>
+            <p>${c.description}</p>
+            <a class="watch" href="https://www.youtube.com/results?search_query=${encodeURIComponent(c.name + ' official full episodes')}" target="_blank" rel="noopener noreferrer">Find official videos ↗</a>
+          </div>
+        </article>`).join("");
+      count.textContent = `${filtered.length} titles`;
+      empty.style.display = filtered.length ? "none" : "block";
+    }
+
+    search.addEventListener("input", render);
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        activeCategory = chip.dataset.category;
+        document.querySelectorAll(".chip").forEach(c => c.classList.toggle("active", c === chip));
+        render();
+      });
+    });
+    render();
+  </script>
+</body>
+</html>
